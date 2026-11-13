@@ -2,7 +2,7 @@
     if (window.location.protocol === 'file:') {
         const fileName = decodeURIComponent(window.location.pathname.split(/[\\/]/).pop() || 'index.html');
         if (/^[a-z0-9-]+\.html$/i.test(fileName)) {
-            window.location.replace('http://127.0.0.1:4173/' + encodeURIComponent(fileName));
+            window.location.replace('http://127.0.0.1:4173/html/' + encodeURIComponent(fileName));
             return;
         }
     }
@@ -12,6 +12,7 @@
     const nav = document.querySelector('nav');
     let revealObserver = null;
     let navigationToken = 0;
+    let pageScriptElement = null;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function closeNavigation() {
@@ -328,7 +329,8 @@
     }
 
     function setupBackgroundAudio() {
-        const audio = new Audio(new URL('audio/01 - Swerve City.mp3', window.location.href));
+        // Todas las páginas HTML viven en /html/ y el audio está en /audio/.
+        const audio = new Audio(new URL('../audio/01 - Swerve City.mp3', window.location.href));
         audio.preload = 'auto';
         audio.volume = 0.3;
 
@@ -415,6 +417,22 @@
         });
     }
 
+    function loadPageScripts(loadedDocument, targetUrl) {
+        if (pageScriptElement) {
+            pageScriptElement.remove();
+            pageScriptElement = null;
+        }
+        const pageScript = Array.from(loadedDocument.querySelectorAll('script[src]')).find(function (script) {
+            return !/\/site\.js(?:\?|$)/i.test(script.getAttribute('src') || '');
+        });
+        if (!pageScript) return;
+        const liveScript = document.createElement('script');
+        liveScript.src = new URL(pageScript.getAttribute('src'), targetUrl).href;
+        liveScript.defer = true;
+        pageScriptElement = liveScript;
+        body.appendChild(liveScript);
+    }
+
     async function navigateWithinSite(targetUrl, addHistory) {
         const token = ++navigationToken;
         try {
@@ -432,6 +450,7 @@
             body.classList.toggle('home-page', loadedDocument.body.classList.contains('home-page'));
             updateActiveNavigation(targetUrl, loadedDocument);
             if (addHistory) history.pushState({ page: targetUrl.pathname }, '', targetUrl.href);
+            loadPageScripts(loadedDocument, targetUrl);
 
             closeNavigation();
             window.scrollTo({ top: 0, behavior: 'auto' });

@@ -1,18 +1,21 @@
 @echo off
 chcp 65001 >nul
 color 0A
-title Iniciar la pagina Deftones
+title Iniciar la pagina Deftones con PHP
 
 cd /d "%~dp0"
-if not exist "js\server.js" goto missing_server
-where node >nul 2>&1
-if errorlevel 1 goto missing_node
+if not exist "server.php" goto missing_server
+where php >nul 2>&1
+if errorlevel 1 goto missing_php
+
+php -r "if (PHP_VERSION_ID < 80100 || !extension_loaded('sodium')) exit(1);"
+if errorlevel 1 goto php_requirements
 
 netstat -ano -p tcp | findstr /R /C:":4173 .*LISTENING" >nul
 if not errorlevel 1 goto server_already_running
 
-echo Iniciando el servidor local de Deftones...
-start "Deftones - Servidor local" cmd /k "cd /d ""%~dp0"" && node js\server.js"
+echo Iniciando el servidor PHP local de Deftones...
+start "Deftones - Servidor PHP" cmd /k "cd /d ""%~dp0"" && php -S 127.0.0.1:4173 -t . server.php"
 timeout /t 3 /nobreak >nul
 start "" "http://127.0.0.1:4173/"
 echo.
@@ -25,19 +28,22 @@ pause >nul
 exit /b 0
 
 :missing_server
-echo ERROR: No encuentro js\server.js. Este archivo debe estar en la carpeta principal del proyecto.
+echo ERROR: No encuentro server.php en la carpeta principal del proyecto.
 goto finish_error
 
-:missing_node
-echo ERROR: Node.js no esta instalado o no esta agregado al PATH.
-echo Instala Node.js y vuelve a ejecutar este archivo.
+:missing_php
+echo ERROR: PHP no esta instalado o no esta agregado al PATH.
+echo Instala PHP 8.1 o posterior y vuelve a ejecutar este archivo.
+goto finish_error
+
+:php_requirements
+echo ERROR: Se necesita PHP 8.1 o posterior con la extension sodium habilitada.
+echo Sodium permite migrar las cuentas creadas con el servidor Node anterior.
 goto finish_error
 
 :server_already_running
 echo Ya hay un servidor usando el puerto 4173.
-echo Puede ser una version anterior del sitio que quedo abierta.
-echo Cierra la ventana "Deftones - Servidor local" y volve a ejecutar este archivo.
-echo Si no encontras esa ventana, reinicia la computadora y volve a intentarlo.
+echo Cierra la ventana del servidor anterior y volve a ejecutar este archivo.
 goto finish_error
 
 :finish_error

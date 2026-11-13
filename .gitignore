@@ -1,3 +1,3 @@
-# Datos temporales locales de cuentas y comentarios
+# Datos locales de cuentas, guardados fuera del control de versiones
 /data/local-store.json
 /data/local-store.json.tmp

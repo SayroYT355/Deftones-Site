@@ -44,6 +44,7 @@ header {
     align-items: center;
     gap: 1rem;
     padding: 0 clamp(1rem, 4vw, 4rem);
+    padding-left: clamp(.65rem, 1.5vw, 1.25rem);
     background: rgba(9,11,13,.94);
     border-bottom: 1px solid var(--line);
     backdrop-filter: blur(18px);
@@ -171,13 +172,15 @@ header h1 {
 }
 
 nav {
-    margin-left: auto;
+    flex: 1;
+    margin-left: 0;
     min-width: 0;
 }
 
 nav ul {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: .15rem;
     list-style: none;
 }
@@ -840,6 +843,9 @@ footer p {
     transition: transform .2s ease;
 }
 
+.album-card.diamond .album-listen { color: #fff; }
+.album-card.adrenaline .album-listen { color: #f2abc0; }
+
 .album-card:hover .album-listen,
 .album-card:focus-visible .album-listen {
     opacity: 1;
@@ -1264,7 +1270,7 @@ footer p {
         border-bottom: 1px solid var(--line);
     }
     nav.open { display: block; }
-    nav ul { flex-direction: column; align-items: stretch; }
+    nav ul { flex-direction: column; align-items: stretch; justify-content: flex-start; }
     nav a { padding: .75rem 1rem; }
 }
 

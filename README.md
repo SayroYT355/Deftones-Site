@@ -11,7 +11,7 @@
 
 ## Resumen
 
-Este proyecto presenta un sitio web multipágina dedicado a Deftones. Reúne información biográfica, discográfica y visual, contenidos educativos sobre el sonido de la banda, videoclips locales y espacios de participación. Se construyó con HTML, CSS y JavaScript, y se incorporó un servidor local en Node.js para servir el sitio, registrar cuentas y gestionar comentarios y publicaciones sin una base SQL.
+Este proyecto presenta un sitio web multipágina dedicado a Deftones. Reúne información biográfica, discográfica y visual, contenidos educativos sobre el sonido de la banda, videoclips locales y espacios de participación. Se construyó con HTML, CSS y JavaScript, y se incorporó un servidor local en PHP para servir el sitio, registrar cuentas y gestionar comentarios y publicaciones sin una base SQL.
 
 La versión documentada contiene **14 páginas**, una hoja de estilos común, recursos visuales y audiovisuales locales, navegación compartida y controles interactivos. El sistema de usuarios y publicaciones está pensado para funcionar en el entorno local del proyecto. Los comentarios y las publicaciones se pueden transferir entre computadoras al sincronizar los archivos de datos con Git.
 
@@ -33,7 +33,7 @@ La versión documentada contiene **14 páginas**, una hoja de estilos común, re
 | `css/style.css` | Estilos compartidos, diseño adaptable, tipografías, animaciones y componentes. |
 | `js/site.js` | Navegación y comportamientos comunes del sitio. |
 | `js/blog.js` | Formularios de cuenta, comentarios y publicaciones comunitarias. |
-| `js/server.js` | Servidor HTTP local, archivos estáticos y API del blog. |
+| `server.php` | Router PHP, servidor local, sesiones y API del blog. |
 | `images/` | Fotografías, portadas, iconos y fondo de Inicio. |
 | `videos/` | Archivos MP4 usados por la sección Videoclips. |
 | `audio/` | Archivo MP3 de Swerve City para el audio de fondo. |
@@ -41,7 +41,7 @@ La versión documentada contiene **14 páginas**, una hoja de estilos común, re
 | `data/posts.json` | Publicaciones públicas de la comunidad, compartibles entre copias. |
 | `data/local-store.json` | Cuentas locales; está excluido de Git. |
 | `Github subir y bajar/` | Scripts para actualizar el proyecto y subir cambios. |
-| `Iniciar la página.bat` | Inicia Node.js y abre el sitio en el navegador. |
+| `Iniciar la página.bat` | Inicia el servidor local de PHP y abre el sitio. |
 | `docs/capturas/` | Capturas comparativas de las 14 páginas. |
 
 ## Historial de desarrollo
@@ -86,7 +86,7 @@ Las cuentas se guardan solo en `data/local-store.json` y no viajan con Git. Los 
 
 ### Acceso y sincronización
 
-Se agregaron scripts `.bat` para descargar actualizaciones y subir cambios con un mensaje asociado al nombre de la comisión. También se creó **Iniciar la página.bat**, que ejecuta `node js/server.js` y abre el sitio en el navegador.
+Se agregaron scripts `.bat` para descargar actualizaciones y subir cambios con un mensaje asociado al nombre de la comisión. También se creó **Iniciar la página.bat**. En la etapa actual inicia el servidor PHP y abre el sitio en el navegador.
 
 ### Hitos registrados en Git
 
@@ -131,9 +131,9 @@ Las clases específicas (`.album-name.diamond`, `.video-card--around`, `.member-
 
 `js/blog.js` realiza solicitudes a la API del mismo origen. Actualiza los formularios según el estado de sesión, obtiene comentarios y publicaciones, y crea cada elemento con `textContent` para mostrar el texto como contenido y no interpretarlo como HTML.
 
-### Node.js: servidor y API local
+### PHP: servidor y API local
 
-`js/server.js` usa módulos incluidos con Node.js (`http`, `fs`, `path` y `crypto`), sin dependencias de terceros. Sirve los archivos del proyecto, gestiona rangos de bytes para que los MP4 puedan avanzar en el tiempo y expone rutas JSON:
+`server.php` reúne el router del servidor local y la API JSON. Usa sesiones PHP, `password_hash`/`password_verify`, Sodium para verificar y migrar en el primer acceso las cuentas scrypt heredadas de Node, y archivos JSON para guardar usuarios, comentarios y publicaciones. Las rutas existentes se mantienen:
 
 | Método | Ruta | Uso |
 |---|---|---|
@@ -144,15 +144,15 @@ Las clases específicas (`.album-name.diamond`, `.video-card--around`, `.member-
 | `GET` / `POST` | `/api/comments` | Lee comentarios públicamente o publica uno con sesión iniciada. |
 | `GET` / `POST` | `/api/posts` | Lee publicaciones públicamente o crea una entrada con sesión iniciada. |
 
-Las entradas de texto se validan por longitud. La interfaz inserta autores y contenidos mediante nodos de texto. Los archivos JSON hacen que esta primera versión sea fácil de revisar y reemplazar posteriormente por almacenamiento SQL.
+Las entradas de texto se validan por longitud. La interfaz inserta autores y contenidos mediante nodos de texto. Los archivos JSON hacen que esta primera versión sea fácil de revisar y reemplazar posteriormente por almacenamiento SQL. Los archivos de `data/` no se entregan como contenido estático: se consultan mediante la API, y las solicitudes con rango de bytes permiten adelantar los MP4.
 
 ## Ejecución
 
-1. Instalá Node.js si todavía no está disponible en el equipo.
+1. Instalá PHP 8.1 o posterior con la extensión Sodium habilitada. Sodium permite verificar las cuentas que se crearon con el sistema anterior y convertir sus hashes al formato de PHP tras iniciar sesión correctamente.
 2. Abrí **Iniciar la página.bat** desde la carpeta principal del proyecto. También podés iniciar el servidor desde una terminal con:
 
    ```bash
-   node js/server.js
+   php -S 127.0.0.1:4173 -t . server.php
    ```
 
 3. Visitá `http://localhost:4173/`.
@@ -169,10 +169,13 @@ Esta entrega es un prototipo local de una página fan. No incluye SQL, servicio 
 En esta edición se reforzó el inicio de sesión y se hizo más visible el espacio para publicar entradas propias:
 
 - Los formularios de registro y acceso declaran `method`, `action`, `autocomplete` y nombres de campo estándar (`username`, `new-password` y `current-password`). Esto ayuda al navegador a ofrecer el guardado y autocompletado de credenciales.
-- La página no lee contraseñas guardadas ni cookies desde JavaScript. El administrador de contraseñas del navegador completa los campos; el navegador adjunta automáticamente la cookie de sesión en solicitudes del mismo origen y Node.js la valida en el servidor.
+- La página no lee contraseñas guardadas ni cookies desde JavaScript. El administrador de contraseñas del navegador completa los campos; el navegador adjunta automáticamente la cookie de sesión en solicitudes del mismo origen y PHP la valida en el servidor.
+- La navegación interna vuelve a cargar los scripts específicos de cada página; así `blog.js` registra los formularios incluso cuando se entra al Blog sin recargar el documento. PHP también acepta el envío HTML estándar como respaldo.
 - La comprobación de sesión se ejecuta separada de la carga de comentarios y publicaciones. Si falla la carga de contenido, el estado de acceso no queda trabado como si la persona hubiera cerrado sesión.
 - `Tu blog personal` queda visible al comienzo de la página. Después de iniciar sesión, aparece el formulario para publicar y la lista `Mis entradas`; las publicaciones también se muestran en `Blogs de la comunidad`.
-- El iniciador comprueba si el puerto `4173` ya está ocupado y avisa que se cierre el servidor anterior antes de volver a abrir el sitio. Así se evita continuar navegando accidentalmente contra una instancia vieja de Node.js.
+- Se corrigió la ruta de Swerve City: las páginas se sirven desde `html/`, mientras el MP3 está en la carpeta raíz `audio/`; el reproductor ahora resuelve la ruta relativa correctamente y mantiene el volumen al 30 %.
+- Se migró el backend de Node.js a PHP. La migración conserva los JSON de comentarios y publicaciones; los hashes scrypt de cuentas anteriores se verifican con Sodium y se actualizan a `password_hash` en el primer inicio correcto.
+- El iniciador comprueba si el puerto `4173` ya está ocupado y avisa que se cierre el servidor anterior antes de volver a abrir el sitio.
 
 Este apartado registra las correcciones funcionales de la edición actual y no requiere capturas adicionales.
 ## Comparativas visuales
@@ -283,7 +286,7 @@ Abrí cada fila para ver las capturas emparejadas. Los archivos están en `docs/
 - Páginas y contenido: [`html/`](html/)
 - Diseño compartido: [`css/style.css`](css/style.css)
 - Interacciones generales: [`js/site.js`](js/site.js)
-- Cuenta, comentarios y publicaciones: [`js/blog.js`](js/blog.js), [`js/server.js`](js/server.js)
+- Cuenta, comentarios y publicaciones: [`js/blog.js`](js/blog.js), [`server.php`](server.php)
 - Datos compartibles de la comunidad: [`data/comments.json`](data/comments.json), [`data/posts.json`](data/posts.json)
 - Capturas comparativas: [`docs/capturas/`](docs/capturas/)
 
