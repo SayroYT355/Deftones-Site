@@ -455,6 +455,19 @@ p {
 .comment-item h5 { display: inline; color: var(--electric); }
 .comment-item time { margin-left: .7rem; color: var(--muted); font-size: .82rem; }
 .comment-item p { margin-top: .5rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.community-blogs { margin-top: 2rem; }
+.personal-blog { margin: 1.25rem 0 2rem; border-color: var(--electric); }
+.personal-blog > h3 { margin-top: 0; }
+.personal-blog-subtitle { margin: 1.5rem 0 .75rem; color: var(--electric); }
+.personal-blog a { color: var(--electric); text-underline-offset: .2em; }
+.personal-blog a:hover { color: var(--text); }
+.community-blog-list { display: grid; gap: 1rem; margin-top: 1.25rem; }
+.community-blog-post { padding: clamp(1rem, 3vw, 1.5rem); border: 1px solid var(--line); background: rgba(9,11,13,.42); }
+.community-blog-post h4 { margin: 0 0 .5rem; color: var(--text); }
+.community-blog-meta { margin: 0 0 .9rem; color: var(--electric); font-size: .88rem; }
+.community-blog-meta time { color: var(--muted); }
+.community-blog-post-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; }
+.community-blog-form { margin-top: 1rem; }
 
 @media (max-width: 700px) {
     .blog-auth-forms { grid-template-columns: 1fr; }

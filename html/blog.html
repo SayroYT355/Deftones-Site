@@ -35,6 +35,25 @@
     <main>
         <h2>Entradas Recientes</h2>
 
+        <section class="article-container personal-blog" aria-labelledby="personal-blog-title">
+            <h3 id="personal-blog-title">Tu blog personal</h3>
+            <p>Escribí tus propias entradas con tu cuenta. Tus publicaciones quedan identificadas con tu usuario y también aparecen en el espacio de la comunidad.</p>
+            <p id="community-blog-login" class="comments-intro">Para empezar, <a href="#register-form">creá una cuenta</a> o <a href="#login-form">iniciá sesión</a>. Después vas a poder escribir y ver tus entradas acá.</p>
+            <form id="community-blog-form" class="blog-form community-blog-form" hidden>
+                <label for="community-blog-title">Título de tu entrada
+                    <input id="community-blog-title" name="title" type="text" minlength="4" maxlength="120" required placeholder="Un título para tu idea">
+                </label>
+                <label for="community-blog-text">Escribí tu entrada
+                    <textarea id="community-blog-text" name="text" rows="7" minlength="20" maxlength="10000" required placeholder="Escribí acá tu entrada..."></textarea>
+                </label>
+                <button class="btn" type="submit">Publicar en mi blog</button>
+            </form>
+            <h4 class="personal-blog-subtitle">Mis entradas</h4>
+            <div id="my-blog-list" class="community-blog-list" aria-live="polite">
+                <p>Comprobando tu sesión…</p>
+            </div>
+        </section>
+
         <article class="article-container">
             <h3>El impacto de 'White Pony' 26 años después</h3>
             <p>Escrito por Angel el 18 de junio de 2026</p>
@@ -50,25 +69,25 @@
 
             <section class="article-comments" aria-labelledby="comments-title">
                 <h4 id="comments-title">Comentarios del artículo</h4>
-                <p class="comments-intro">Creá una cuenta o iniciá sesión para participar de la conversación.</p>
+                <p class="comments-intro">Podés leer los comentarios sin cuenta. Creá una cuenta o iniciá sesión para publicar.</p>
                 <div class="blog-auth-forms">
-                    <form id="register-form" class="blog-form">
+                    <form id="register-form" class="blog-form" action="/api/register" method="post" autocomplete="on">
                         <h5>Crear cuenta</h5>
-                        <label>Nombre de usuario
-                            <input name="username" type="text" minlength="3" maxlength="24" autocomplete="username" required>
+                        <label for="register-username">Nombre de usuario
+                            <input id="register-username" name="username" type="text" minlength="3" maxlength="24" autocomplete="username" autocapitalize="none" spellcheck="false" required>
                         </label>
-                        <label>Contraseña
-                            <input name="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+                        <label for="register-password">Contraseña
+                            <input id="register-password" name="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
                         </label>
                         <button class="btn" type="submit">Crear cuenta</button>
                     </form>
-                    <form id="login-form" class="blog-form">
+                    <form id="login-form" class="blog-form" action="/api/login" method="post" autocomplete="on">
                         <h5>Iniciar sesión</h5>
-                        <label>Nombre de usuario
-                            <input name="username" type="text" autocomplete="username" required>
+                        <label for="login-username">Nombre de usuario
+                            <input id="login-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
                         </label>
-                        <label>Contraseña
-                            <input name="password" type="password" autocomplete="current-password" required>
+                        <label for="login-password">Contraseña
+                            <input id="login-password" name="password" type="password" autocomplete="current-password" required>
                         </label>
                         <button class="btn" type="submit">Iniciar sesión</button>
                     </form>
@@ -91,6 +110,14 @@
             <a href="./curso.html" class="btn">Volver a la Academia</a>
             <a href="./faq.html" class="btn">Preguntas Frecuentes</a>
         </article>
+
+        <section class="article-container community-blogs" aria-labelledby="community-blogs-title">
+            <h3 id="community-blogs-title">Blogs de la comunidad</h3>
+            <p>Leé las entradas públicas de otros usuarios y las tuyas.</p>
+            <div id="community-blog-list" class="community-blog-list" aria-live="polite">
+                <p>Cargando publicaciones…</p>
+            </div>
+        </section>
     </main>
 
     <footer>

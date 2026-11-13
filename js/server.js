@@ -8,11 +8,13 @@ const root = path.resolve(__dirname, '..');
 const port = Number(process.env.PORT || 4173);
 const dataDir = path.join(root, 'data');
 const dataFile = path.join(dataDir, 'local-store.json');
+const commentsFile = path.join(dataDir, 'comments.json');
+const postsFile = path.join(dataDir, 'posts.json');
 const scrypt = promisify(crypto.scrypt);
 const sessions = new Map();
 const SESSION_TTL = 7 * 24 * 60 * 60 * 1000;
-const BODY_LIMIT = 16 * 1024;
-let store = { users: [], comments: [] };
+const BODY_LIMIT = 80 * 1024;
+let store = { users: [], comments: [], posts: [] };
 let saveQueue = Promise.resolve();
 
 const types = {
@@ -99,14 +101,30 @@ function createSession(user, response) {
     response.setHeader('Set-Cookie', `deftones_session=${encodeURIComponent(token)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${Math.floor(SESSION_TTL / 1000)}`);
 }
 
-async function saveStore() {
-    const snapshot = JSON.stringify(store, null, 2);
+async function writeJson(file, value) {
+    const snapshot = JSON.stringify(value, null, 2);
     saveQueue = saveQueue.then(async () => {
-        const temporaryFile = `${dataFile}.tmp`;
+        const temporaryFile = `${file}.tmp`;
         await fs.promises.writeFile(temporaryFile, snapshot, 'utf8');
-        await fs.promises.rename(temporaryFile, dataFile);
+        await fs.promises.rename(temporaryFile, file);
     });
     await saveQueue;
+}
+
+async function saveStore() {
+    await writeJson(dataFile, { users: store.users });
+}
+
+async function saveComments() {
+    await writeJson(commentsFile, { comments: store.comments });
+}
+
+async function savePosts() {
+    await writeJson(postsFile, { posts: store.posts });
+}
+
+function normalizeUsername(value) {
+    return String(value || '').normalize('NFKC').trim().toLocaleLowerCase('es');
 }
 
 async function handleApi(request, response, pathname) {
@@ -119,7 +137,7 @@ async function handleApi(request, response, pathname) {
     if (request.method === 'POST' && pathname === '/api/register') {
         try {
             const body = await readBody(request);
-            const username = String(body.username || '').trim();
+            const username = String(body.username || '').normalize('NFKC').trim();
             const password = String(body.password || '');
             if (!/^[\p{L}\p{N}_.-]{3,24}$/u.test(username)) {
                 json(response, 400, { error: 'El usuario debe tener entre 3 y 24 caracteres (letras, números, punto, guion o guion bajo).' });
@@ -129,12 +147,16 @@ async function handleApi(request, response, pathname) {
                 json(response, 400, { error: 'La contraseña debe tener entre 8 y 128 caracteres.' });
                 return true;
             }
-            if (store.users.some(user => user.username.toLowerCase() === username.toLowerCase())) {
+            if (store.users.some(user => normalizeUsername(user.username) === normalizeUsername(username))) {
                 json(response, 409, { error: 'Ese nombre de usuario ya está registrado.' });
                 return true;
             }
             const salt = crypto.randomBytes(16).toString('hex');
             const passwordHash = (await scrypt(password, salt, 64)).toString('hex');
+            if (store.users.some(user => normalizeUsername(user.username) === normalizeUsername(username))) {
+                json(response, 409, { error: 'Ese nombre de usuario ya está registrado. Elegí otro.' });
+                return true;
+            }
             const user = { id: crypto.randomUUID(), username, salt, passwordHash, createdAt: new Date().toISOString() };
             store.users.push(user);
             await saveStore();
@@ -149,9 +171,9 @@ async function handleApi(request, response, pathname) {
     if (request.method === 'POST' && pathname === '/api/login') {
         try {
             const body = await readBody(request);
-            const username = String(body.username || '').trim();
+            const username = String(body.username || '').normalize('NFKC').trim();
             const password = String(body.password || '');
-            const user = store.users.find(candidate => candidate.username.toLowerCase() === username.toLowerCase());
+            const user = store.users.find(candidate => normalizeUsername(candidate.username) === normalizeUsername(username));
             if (!user) {
                 json(response, 401, { error: 'Usuario o contraseña incorrectos.' });
                 return true;
@@ -204,10 +226,51 @@ async function handleApi(request, response, pathname) {
                 createdAt: new Date().toISOString()
             };
             store.comments.push(comment);
-            await saveStore();
+            await saveComments();
             json(response, 201, { comment });
         } catch (error) {
             json(response, error.status || 500, { error: error.status ? error.message : 'No se pudo guardar el comentario.' });
+        }
+        return true;
+    }
+
+    if (request.method === 'GET' && pathname === '/api/posts') {
+        const posts = [...store.posts].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        json(response, 200, { posts });
+        return true;
+    }
+
+    if (request.method === 'POST' && pathname === '/api/posts') {
+        const user = sessionUser(request);
+        if (!user) {
+            json(response, 401, { error: 'Iniciá sesión para publicar tu blog.' });
+            return true;
+        }
+        try {
+            const body = await readBody(request);
+            const title = String(body.title || '').trim();
+            const text = String(body.text || '').trim();
+            if (title.length < 4 || title.length > 120) {
+                json(response, 400, { error: 'El título debe tener entre 4 y 120 caracteres.' });
+                return true;
+            }
+            if (text.length < 20 || text.length > 10000) {
+                json(response, 400, { error: 'La publicación debe tener entre 20 y 10.000 caracteres.' });
+                return true;
+            }
+            const post = {
+                id: crypto.randomUUID(),
+                userId: user.id,
+                username: user.username,
+                title,
+                text,
+                createdAt: new Date().toISOString()
+            };
+            store.posts.push(post);
+            await savePosts();
+            json(response, 201, { post });
+        } catch (error) {
+            json(response, error.status || 500, { error: error.status ? error.message : 'No se pudo guardar la publicación.' });
         }
         return true;
     }
@@ -271,16 +334,33 @@ async function serveStatic(request, response, pathname) {
 
 async function start() {
     await fs.promises.mkdir(dataDir, { recursive: true });
+    let legacyComments = [];
+    let hasUsersFile = true;
     try {
         const saved = JSON.parse(await fs.promises.readFile(dataFile, 'utf8'));
-        store = {
-            users: Array.isArray(saved.users) ? saved.users : [],
-            comments: Array.isArray(saved.comments) ? saved.comments : []
-        };
+        store.users = Array.isArray(saved.users) ? saved.users : [];
+        legacyComments = Array.isArray(saved.comments) ? saved.comments : [];
     } catch (error) {
         if (error.code !== 'ENOENT') throw error;
-        await saveStore();
+        hasUsersFile = false;
     }
+    try {
+        const savedComments = JSON.parse(await fs.promises.readFile(commentsFile, 'utf8'));
+        store.comments = Array.isArray(savedComments.comments) ? savedComments.comments : [];
+    } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        store.comments = legacyComments;
+        await saveComments();
+    }
+    try {
+        const savedPosts = JSON.parse(await fs.promises.readFile(postsFile, 'utf8'));
+        store.posts = Array.isArray(savedPosts.posts) ? savedPosts.posts : [];
+    } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        store.posts = [];
+        await savePosts();
+    }
+    if (!hasUsersFile) await saveStore();
 
     http.createServer(async (request, response) => {
         let pathname;
@@ -298,7 +378,7 @@ async function start() {
         await serveStatic(request, response, pathname);
     }).listen(port, '127.0.0.1', () => {
         console.log(`Deftones site available at http://localhost:${port}/`);
-        console.log('Local accounts and comments are stored in data/local-store.json.');
+        console.log('Local accounts are stored in data/local-store.json; shared comments are in data/comments.json.');
     });
 }
 
