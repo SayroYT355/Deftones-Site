@@ -24,9 +24,7 @@ if errorlevel 1 goto git_error
 git diff --cached --quiet
 if not errorlevel 1 goto no_changes
 
-set /p "msg=Escribe un mensaje para este cambio: "
-if "%msg%"=="" set "msg=Actualizacion del sitio"
-git commit -m "[%comision%] %msg%"
+git commit -m "Comision %comision%"
 if errorlevel 1 goto git_error
 
 echo.

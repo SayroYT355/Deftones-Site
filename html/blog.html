@@ -50,16 +50,42 @@
 
             <section class="article-comments" aria-labelledby="comments-title">
                 <h4 id="comments-title">Comentarios del artículo</h4>
-                <h5>@NuMetalFan99</h5>
-                <p>Para mí sigue siendo uno de los discos más completos de la banda. La atmósfera de <em>Digital Bath</em> es irrepetible.</p>
-                <h5>@luna_sonora</h5>
-                <p>Me encanta cómo pasa de la calma a la explosión sin que ninguna canción pierda su identidad.</p>
-                <h5>@ChinoMorenoFan</h5>
-                <p>La interpretación vocal de Chino tiene una sensibilidad increíble. En <em>Change</em> cada capa suma algo.</p>
-                <h5>@bajoenloop</h5>
-                <p>Después de tantos años todavía descubro detalles nuevos en la batería y el bajo. Es un disco para volver a escuchar con auriculares.</p>
-                <h5>@WhitePony2000</h5>
-                <p><em>Knife Prty</em> y <em>Passenger</em> hacen que el álbum tenga un recorrido único. No envejeció nada.</p>
+                <p class="comments-intro">Creá una cuenta o iniciá sesión para participar de la conversación.</p>
+                <div class="blog-auth-forms">
+                    <form id="register-form" class="blog-form">
+                        <h5>Crear cuenta</h5>
+                        <label>Nombre de usuario
+                            <input name="username" type="text" minlength="3" maxlength="24" autocomplete="username" required>
+                        </label>
+                        <label>Contraseña
+                            <input name="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+                        </label>
+                        <button class="btn" type="submit">Crear cuenta</button>
+                    </form>
+                    <form id="login-form" class="blog-form">
+                        <h5>Iniciar sesión</h5>
+                        <label>Nombre de usuario
+                            <input name="username" type="text" autocomplete="username" required>
+                        </label>
+                        <label>Contraseña
+                            <input name="password" type="password" autocomplete="current-password" required>
+                        </label>
+                        <button class="btn" type="submit">Iniciar sesión</button>
+                    </form>
+                </div>
+                <div id="account-panel" class="account-panel" hidden>
+                    <p id="account-status"></p>
+                    <button id="logout-button" class="btn btn-secondary" type="button">Cerrar sesión</button>
+                </div>
+                <p id="blog-feedback" class="blog-feedback" role="status" aria-live="polite"></p>
+                <form id="comment-form" class="blog-form comment-form" hidden>
+                    <label for="comment-text">Dejá tu comentario</label>
+                    <textarea id="comment-text" name="text" rows="4" minlength="2" maxlength="1000" required placeholder="¿Qué te parece el álbum?"></textarea>
+                    <button class="btn" type="submit">Publicar comentario</button>
+                </form>
+                <div id="comment-list" class="comment-list" aria-live="polite">
+                    <p>Cargando comentarios…</p>
+                </div>
             </section>
 
             <a href="./curso.html" class="btn">Volver a la Academia</a>
@@ -72,6 +98,7 @@
         <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
     </footer>
 
+    <script src="../js/blog.js" defer></script>
 </body>
 <script src="../js/site.js"></script>
 </html>
