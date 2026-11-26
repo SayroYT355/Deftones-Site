@@ -194,6 +194,9 @@
             const button = player.querySelector('.video-play-overlay');
             if (!video || !button) return;
 
+            const useNativeTouchControls = window.matchMedia('(pointer: coarse)').matches;
+            if (useNativeTouchControls) video.controls = true;
+
             player.dataset.playButtonReady = 'true';
             const controls = document.createElement('div');
             controls.className = 'video-controls';
@@ -209,6 +212,30 @@
             const volumeButton = controls.querySelector('.video-volume-toggle');
             const volume = controls.querySelector('.video-volume');
             const fullscreenButton = controls.querySelector('.video-fullscreen');
+
+            function showPlaybackError() {
+                player.classList.add('has-playback-error');
+                if (player.querySelector('.video-playback-error')) return;
+                const message = document.createElement('p');
+                message.className = 'video-playback-error';
+                message.setAttribute('role', 'status');
+                message.append(document.createTextNode('No se pudo reproducir este archivo en el dispositivo. '));
+                const youtubeLink = player.closest('.video-card').querySelector('.video-link');
+                if (youtubeLink) {
+                    const link = document.createElement('a');
+                    link.href = youtubeLink.href;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.textContent = 'Ver en YouTube';
+                    message.append(link);
+                }
+                player.append(message);
+            }
+
+            function playVideo() {
+                const result = video.play();
+                if (result && typeof result.catch === 'function') result.catch(showPlaybackError);
+            }
 
             function formatTime(seconds) {
                 if (!Number.isFinite(seconds)) return '0:00';
@@ -231,18 +258,19 @@
             }
 
             button.addEventListener('click', function () {
-                video.play().catch(function () {});
+                playVideo();
                 button.blur();
             });
             video.addEventListener('click', function () {
-                if (video.paused || video.ended) video.play().catch(function () {});
+                if (video.paused || video.ended) playVideo();
                 else video.pause();
             });
             playPauseButton.addEventListener('click', function () {
-                if (video.paused || video.ended) video.play().catch(function () {});
+                if (video.paused || video.ended) playVideo();
                 else video.pause();
                 playPauseButton.blur();
             });
+            video.addEventListener('error', showPlaybackError);
             timeline.addEventListener('input', function () {
                 if (Number.isFinite(video.duration)) video.currentTime = (Number(timeline.value) / 1000) * video.duration;
             });
