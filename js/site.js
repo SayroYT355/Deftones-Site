@@ -213,13 +213,23 @@
             const volume = controls.querySelector('.video-volume');
             const fullscreenButton = controls.querySelector('.video-fullscreen');
 
-            function showPlaybackError() {
+            function showPlaybackError(playError) {
                 player.classList.add('has-playback-error');
                 if (player.querySelector('.video-playback-error')) return;
                 const message = document.createElement('p');
                 message.className = 'video-playback-error';
                 message.setAttribute('role', 'status');
-                message.append(document.createTextNode('No se pudo reproducir este archivo en el dispositivo. '));
+                const mediaErrorCode = video.error ? video.error.code : 0;
+                const detail = mediaErrorCode === 2
+                    ? 'Vercel no pudo entregar el archivo de video.'
+                    : mediaErrorCode === 3
+                        ? 'El navegador recibió el video, pero no pudo decodificarlo.'
+                        : mediaErrorCode === 4
+                            ? 'El navegador no reconoce la ruta o el formato del video.'
+                            : playError && playError.name === 'NotAllowedError'
+                                ? 'El navegador bloqueó la reproducción. Tocá reproducir otra vez.'
+                                : 'No se pudo iniciar la reproducción del video.';
+                message.append(document.createTextNode(detail + ' '));
                 const youtubeLink = player.closest('.video-card').querySelector('.video-link');
                 if (youtubeLink) {
                     const link = document.createElement('a');
@@ -234,7 +244,7 @@
 
             function playVideo() {
                 const result = video.play();
-                if (result && typeof result.catch === 'function') result.catch(showPlaybackError);
+                if (result && typeof result.catch === 'function') result.catch(function (error) { showPlaybackError(error); });
             }
 
             function formatTime(seconds) {
