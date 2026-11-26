@@ -1485,3 +1485,55 @@ footer p {
     .background-audio-toggle.is-playing::after { animation: none; }
     .page-enter { animation: none; }
 }
+
+.cv-section {
+    margin-top: 2rem;
+    border-color: rgba(183,216,220,.45);
+}
+
+.cv-section > h3 {
+    color: var(--electric);
+}
+
+.cv-technology-note {
+    line-height: 1.8;
+}
+
+.cv-code-example {
+    margin: 1rem 0 1.5rem;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    color: var(--electric);
+    background: rgba(5,7,8,.72);
+    border: 1px solid var(--line);
+    font: .9rem/1.7 Consolas, 'Courier New', monospace;
+    white-space: pre;
+}
+
+.cv-viewer-frame {
+    width: 100%;
+    height: clamp(560px, 85vh, 920px);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--line);
+}
+
+.cv-viewer-frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #fff;
+}
+
+.cv-download {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 700px) {
+    .cv-viewer-frame { height: min(74vh, 720px); min-height: 520px; }
+    .cv-code-example { font-size: .78rem; }
+}

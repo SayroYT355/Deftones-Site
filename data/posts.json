@@ -1,12 +1,20 @@
 {
-  "posts": [
-    {
-      "id": "cf16e465-88c0-440c-b333-9bd531d7722e",
-      "userId": "149aafb0-9324-4e94-98f4-822d965a5c19",
-      "username": "Sodita_cl",
-      "title": "Deftones me gusta",
-      "text": "hola me gusta mucho deftones",
-      "createdAt": "2026-11-13T15:32:32.411Z"
-    }
-  ]
+    "posts": [
+        {
+            "id": "cf16e465-88c0-440c-b333-9bd531d7722e",
+            "userId": "149aafb0-9324-4e94-98f4-822d965a5c19",
+            "username": "Sodita_cl",
+            "title": "Deftones me gusta",
+            "text": "hola me gusta mucho deftones",
+            "createdAt": "2026-11-13T15:32:32.411Z"
+        },
+        {
+            "id": "14be54fc0de80fce52a4335570a2bb87",
+            "userId": "1acd9d82f82d1969768e76b0e9939c7e",
+            "username": "48083480",
+            "title": "hola jaja",
+            "text": "este es mi primer blog!",
+            "createdAt": "2026-11-13T17:13:41+00:00"
+        }
+    ]
 }
