@@ -15,6 +15,27 @@
     let pageScriptElement = null;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+    function setupAccessibilityLandmarks() {
+        const main = document.querySelector('main');
+        if (!main) return;
+
+        if (!main.id) main.id = 'main-content';
+        main.tabIndex = -1;
+
+        if (nav && !nav.hasAttribute('aria-label')) {
+            nav.setAttribute('aria-label', 'Navegación principal');
+        }
+
+        let skipLink = document.querySelector('.skip-link');
+        if (!skipLink) {
+            skipLink = document.createElement('a');
+            skipLink.className = 'skip-link';
+            skipLink.href = '#main-content';
+            skipLink.textContent = 'Saltar al contenido principal';
+            body.insertBefore(skipLink, body.firstChild);
+        }
+    }
+
     function closeNavigation() {
         if (!nav) return;
         nav.classList.remove('open');
@@ -484,6 +505,7 @@
             if (revealObserver) revealObserver.disconnect();
             document.querySelector('.gallery-lightbox')?.remove();
             document.querySelector('main').replaceWith(document.importNode(nextMain, true));
+            setupAccessibilityLandmarks();
             document.title = loadedDocument.title;
             body.classList.toggle('home-page', loadedDocument.body.classList.contains('home-page'));
             updateActiveNavigation(targetUrl, loadedDocument);
@@ -532,6 +554,7 @@
     }
 
     setupNavigationToggle();
+    setupAccessibilityLandmarks();
     initializePageContent();
     const updateScrollState = setupBackToTop();
     setupBackgroundAudio();

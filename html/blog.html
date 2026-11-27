@@ -41,7 +41,7 @@
             <h3 id="personal-blog-title">Tu blog personal</h3>
             <p>Escribí tus propias entradas con tu cuenta. Tus publicaciones quedan identificadas con tu usuario y también aparecen en el espacio de la comunidad.</p>
             <p id="community-blog-login" class="comments-intro">Para empezar, <a href="#register-form">creá una cuenta</a> o <a href="#login-form">iniciá sesión</a>. Después vas a poder escribir y ver tus entradas acá.</p>
-            <form id="community-blog-form" class="blog-form community-blog-form" hidden>
+            <form id="community-blog-form" class="blog-form community-blog-form" aria-labelledby="personal-blog-title" hidden>
                 <label for="community-blog-title">Título de tu entrada
                     <input id="community-blog-title" name="title" type="text" minlength="4" maxlength="120" required placeholder="Un título para tu idea">
                 </label>
@@ -73,8 +73,8 @@
                 <h4 id="comments-title">Comentarios del artículo</h4>
                 <p class="comments-intro">Podés leer los comentarios sin cuenta. Creá una cuenta o iniciá sesión para publicar.</p>
                 <div class="blog-auth-forms">
-                    <form id="register-form" class="blog-form" action="/api/register" method="post" autocomplete="on">
-                        <h5>Crear cuenta</h5>
+                    <form id="register-form" class="blog-form" action="/api/register" method="post" autocomplete="on" aria-labelledby="register-form-title">
+                        <h5 id="register-form-title">Crear cuenta</h5>
                         <label for="register-username">Nombre de usuario
                             <input id="register-username" name="username" type="text" minlength="3" maxlength="24" autocomplete="username" autocapitalize="none" spellcheck="false" required>
                         </label>
@@ -83,8 +83,8 @@
                         </label>
                         <button class="btn" type="submit">Crear cuenta</button>
                     </form>
-                    <form id="login-form" class="blog-form" action="/api/login" method="post" autocomplete="on">
-                        <h5>Iniciar sesión</h5>
+                    <form id="login-form" class="blog-form" action="/api/login" method="post" autocomplete="on" aria-labelledby="login-form-title">
+                        <h5 id="login-form-title">Iniciar sesión</h5>
                         <label for="login-username">Nombre de usuario
                             <input id="login-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
                         </label>
@@ -99,7 +99,7 @@
                     <button id="logout-button" class="btn btn-secondary" type="button">Cerrar sesión</button>
                 </div>
                 <p id="blog-feedback" class="blog-feedback" role="status" aria-live="polite"></p>
-                <form id="comment-form" class="blog-form comment-form" hidden>
+                <form id="comment-form" class="blog-form comment-form" aria-labelledby="comments-title" hidden>
                     <label for="comment-text">Dejá tu comentario</label>
                     <textarea id="comment-text" name="text" rows="4" minlength="2" maxlength="1000" required placeholder="¿Qué te parece el álbum?"></textarea>
                     <button class="btn" type="submit">Publicar comentario</button>
