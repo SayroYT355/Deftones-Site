@@ -1,36 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galería de Deftones: fotos de la banda</title>
-    <meta name="description" content="Mirá fotografías de Deftones en vivo, retratos de sus integrantes y momentos de distintas épocas de la banda.">
-    <link rel="canonical" href="https://deftonesfansite.vercel.app/html/galeria.html">
-    <link rel="icon" type="image/png" href="../images/icon (1).png">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <header>
-        <h1>Deftones</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li><a href="./biografia.html">Biografía</a></li>
-                <li><a href="./discografia.html">Discografía</a></li>
-                <li><a href="./integrantes.html">Integrantes</a></li>
-                <li><a href="./tours.html">Tours</a></li>
-                <li><a href="./galeria.html" class="active">Galería</a></li>
-                <li><a href="./videoclips.html">Videoclips</a></li>
-                <li><a href="./tienda.html">Tienda</a></li>
-                <li><a href="./noticias.html">Noticias</a></li>
-                <li><a href="./contacto.html">Contacto</a></li>
-                <li><a href="./curso.html">Academia</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./faq.html">Preguntas Frecuentes</a></li>
-                <li><a href="./nosotros.html">Quiénes Somos</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$titulo_pagina = 'Galería de Deftones: fotos de la banda';
+$descripcion_pagina = 'Mirá fotografías de Deftones en vivo, retratos de sus integrantes y momentos de distintas épocas de la banda.';
+$pagina_actual = 'galeria';
+require_once __DIR__ . "/../includes/header.php";
+?>
 
     <main>
         <h2>Galería fotográfica de Deftones</h2>
@@ -120,15 +93,10 @@
                 </article>
             </div>
 
-            <a href="./videoclips.html" class="btn">Ver Videoclips</a>
-            <a href="./blog.html" class="btn">Ir al Blog</a>
+            <a href="./videoclips.php" class="btn">Ver Videoclips</a>
+            <a href="./blog.php" class="btn">Ir al Blog</a>
         </div>
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
-    </footer>
-    <script src="../js/site.js"></script>
-</body>
-</html>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

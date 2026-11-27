@@ -1,7 +1,7 @@
 (function () {
     if (window.location.protocol === 'file:') {
-        const fileName = decodeURIComponent(window.location.pathname.split(/[\\/]/).pop() || 'index.html');
-        if (/^[a-z0-9-]+\.html$/i.test(fileName)) {
+        const fileName = decodeURIComponent(window.location.pathname.split(/[\\/]/).pop() || 'index.php');
+        if (/^[a-z0-9-]+\.php$/i.test(fileName)) {
             window.location.replace('http://127.0.0.1:4173/html/' + encodeURIComponent(fileName));
             return;
         }
@@ -677,7 +677,7 @@
             if (link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
 
             const targetUrl = new URL(link.href, window.location.href);
-            if (targetUrl.origin !== window.location.origin || targetUrl.hash || !targetUrl.pathname.toLowerCase().endsWith('.html')) return;
+            if (targetUrl.origin !== window.location.origin || targetUrl.hash || !targetUrl.pathname.toLowerCase().endsWith('.php')) return;
             if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') return;
             event.preventDefault();
 

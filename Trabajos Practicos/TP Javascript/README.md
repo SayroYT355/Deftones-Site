@@ -8,7 +8,7 @@
 
 En este trabajo incorporé ejercicios de JavaScript al sitio para practicar mensajes, validación de formularios, fecha y hora, cambio de tema y resumen de datos. También aproveché interacciones que el sitio ya tenía, como el menú móvil y la galería.
 
-Yo coloqué la lógica compartida en [`js/site.js`](../../js/site.js). Para mostrar los errores y los nuevos controles, también actualicé [`html/contacto.html`](../../html/contacto.html) y agregué estilos en [`css/style.css`](../../css/style.css).
+Yo coloqué la lógica compartida en [`js/site.js`](../../js/site.js). Para mostrar los errores y los nuevos controles, también actualicé [`html/contacto.php`](../../html/contacto.php) y agregué estilos en [`css/style.css`](../../css/style.css).
 
 ## 1. Saludo al cargar el sitio
 
@@ -55,7 +55,7 @@ Además de los ejercicios anteriores, yo mantuve las interacciones generales que
 ## Archivos de referencia
 
 - [`js/site.js`](../../js/site.js): saludo, validación, reloj, tema, navegación y galería.
-- [`html/contacto.html`](../../html/contacto.html): campos, mensajes de error y estructura del resumen.
+- [`html/contacto.php`](../../html/contacto.php): campos, mensajes de error y estructura del resumen.
 - [`css/style.css`](../../css/style.css): presentación del formulario, los mensajes, el reloj y los temas.
 
 ## Verificación

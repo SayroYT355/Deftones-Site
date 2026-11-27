@@ -29,7 +29,7 @@ function body(): array {
 }
 function finishAuth(int $status, array $user): never {
     if (str_starts_with(strtolower((string)($_SERVER['CONTENT_TYPE'] ?? '')), 'application/x-www-form-urlencoded')) {
-        header('Location: /html/blog.html', true, 303);
+        header('Location: /html/blog.php', true, 303);
         exit;
     }
     respond($status, ['user' => safeUser($user)]);
@@ -165,6 +165,24 @@ if (PHP_SAPI === 'cli-server') {
     }
     $decoded=rawurldecode($path);
     if ($decoded === '/') return false;
+    $phpPages = [
+        '/index.php',
+        '/html/biografia.php',
+        '/html/blog.php',
+        '/html/contacto.php',
+        '/html/curso.php',
+        '/html/discografia.php',
+        '/html/faq.php',
+        '/html/galeria.php',
+        '/html/index.php',
+        '/html/integrantes.php',
+        '/html/nosotros.php',
+        '/html/noticias.php',
+        '/html/tienda.php',
+        '/html/tours.php',
+        '/html/videoclips.php',
+    ];
+    if (in_array($decoded, $phpPages, true)) return false;
     if(str_contains($decoded,"\0")||preg_match('#(^|/)(\.git|data)(/|$)#i',$decoded)||preg_match('/\.php(?:$|\/)/i',$decoded)) { http_response_code(404); exit('Not found'); }
     $candidate=realpath(__DIR__.DIRECTORY_SEPARATOR.ltrim(str_replace(['/','\\'],DIRECTORY_SEPARATOR,$decoded),DIRECTORY_SEPARATOR));
     if($candidate!==false&&str_starts_with($candidate,__DIR__.DIRECTORY_SEPARATOR)&&is_file($candidate)) {

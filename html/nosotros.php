@@ -1,56 +1,27 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre el creador del Deftones Fan Site</title>
-    <meta name="description" content="Conocé al creador, el propósito y las tecnologías usadas para desarrollar este sitio web dedicado a Deftones.">
-    <link rel="canonical" href="https://deftonesfansite.vercel.app/html/nosotros.html">
-    <link rel="icon" type="image/png" href="../images/icon (1).png">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <header>
-        <h1>Deftones</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li><a href="./biografia.html">Biografía</a></li>
-                <li><a href="./discografia.html">Discografía</a></li>
-                <li><a href="./integrantes.html">Integrantes</a></li>
-                <li><a href="./tours.html">Tours</a></li>
-                <li><a href="./galeria.html">Galería</a></li>
-                <li><a href="./videoclips.html">Videoclips</a></li>
-                <li><a href="./tienda.html">Tienda</a></li>
-                <li><a href="./noticias.html">Noticias</a></li>
-                <li><a href="./contacto.html">Contacto</a></li>
-                <li><a href="./curso.html">Academia</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./faq.html">Preguntas Frecuentes</a></li>
-                <li><a href="./nosotros.html" class="active">Quiénes Somos</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$titulo_pagina = 'Sobre el creador del Deftones Fan Site';
+$descripcion_pagina = 'Conocé al creador, el propósito y las tecnologías usadas para desarrollar este sitio web dedicado a Deftones.';
+$pagina_actual = 'nosotros';
+require_once __DIR__ . "/../includes/header.php";
+?>
 
     <main>
         <h2>Sobre el creador del Deftones Fan Site</h2>
         <div class="article-container">
             <p>Mi nombre es Angel De Piero, estudiante del último año de la carrera técnica en Informática. Este sitio web dedicado a Deftones fue desarrollado íntegramente por mí como un proyecto práctico y técnico para la materia de desarrollo y maquetación web, aplicando estándares modernos de HTML5, CSS3 y JavaScript.</p>
-            
+
             <p>El objetivo principal de este espacio es demostrar de forma práctica el manejo correcto de las jerarquías de texto, menús de navegación enlazados, aplicación de etiquetas de formato especial y la estructuración limpia de código utilizando Visual Studio Code.</p>
 
             <h3>Mis Redes y Contacto</h3>
             <p>Si te interesa conocer más sobre mi trayectoria, conectar profesionalmente o enviarme una consulta sobre desarrollo Front-End, puedes encontrarme en los siguientes canales:</p>
-            
+
             <ul>
                 <li><strong>LinkedIn Profesional:</strong> <a href="https://www.linkedin.com/in/angel-bautista-de-piero-clarasó-a8a84936a" target="_blank">angel-bautista-de-piero-clarasó</a></li>
                 <li><strong>Instagram Personal:</strong> <a href="https://www.instagram.com/fxredef" target="_blank">@fxredef</a></li>
                 <li><strong>Correo Electrónico:</strong> <a href="mailto:angelbautistadpc@gmail.com">angelbautistadpc@gmail.com</a></li>
             </ul>
-            
-            <a href="./index.html" class="btn">Volver al Inicio</a>
+
+            <a href="./index.php" class="btn">Volver al Inicio</a>
         </div>
 
         <section class="article-container cv-section" aria-labelledby="cv-title">
@@ -77,11 +48,5 @@
         </section>
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
-    </footer>
 
-</body>
-<script src="../js/site.js"></script>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

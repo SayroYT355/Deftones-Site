@@ -1,38 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso de análisis musical de Deftones | Academia</title>
-    <meta name="description" content="Aprendé a analizar el sonido de Deftones: guitarras, voz, bajo, batería, afinaciones y capas de producción.">
-    <link rel="canonical" href="https://deftonesfansite.vercel.app/html/curso.html">
-    <link rel="icon" type="image/png" href="../images/icon (1).png">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <header>
-        <h1>Deftones</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li><a href="./biografia.html">Biografía</a></li>
-                <li><a href="./discografia.html">Discografía</a></li>
-                <li><a href="./integrantes.html">Integrantes</a></li>
-                <li><a href="./tours.html">Tours</a></li>
-                <li><a href="./galeria.html">Galería</a></li>
-                <li><a href="./videoclips.html">Videoclips</a></li>
-                <li><a href="./tienda.html">Tienda</a></li>
-                <li><a href="./noticias.html">Noticias</a></li>
-                <li><a href="./contacto.html">Contacto</a></li>
-                <li><a href="./curso.html" class="active">Academia</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./faq.html">Preguntas Frecuentes</a></li>
-                <li><a href="./nosotros.html">Quiénes Somos</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$titulo_pagina = 'Curso de análisis musical de Deftones | Academia';
+$descripcion_pagina = 'Aprendé a analizar el sonido de Deftones: guitarras, voz, bajo, batería, afinaciones y capas de producción.';
+$pagina_actual = 'curso';
+require_once __DIR__ . "/../includes/header.php";
+?>
 
     <main>
         <div class="article-container academy-container">
@@ -82,16 +53,10 @@
             <li><a href="https://bassmagazine.com/issues/issue-8/sergio-vega-pushing-ohms/" target="_blank" rel="noopener noreferrer">Bass Magazine: <span class="member-name sergio">Sergio Vega</span> y la composición de <span class="album-name ohms">Ohms</span></a></li>
         </ul>
 
-        <a href="./blog.html" class="btn">Ir al Blog</a>
-        <a href="./faq.html" class="btn">Preguntas Frecuentes</a>
+        <a href="./blog.php" class="btn">Ir al Blog</a>
+        <a href="./faq.php" class="btn">Preguntas Frecuentes</a>
         </div>
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
-    </footer>
 
-</body>
-<script src="../js/site.js"></script>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

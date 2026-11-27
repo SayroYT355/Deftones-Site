@@ -1,45 +1,16 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videoclips de Deftones: videos oficiales</title>
-    <meta name="description" content="Mirá una selección de videoclips de Deftones y recorré canciones clave de sus álbumes más reconocidos.">
-    <link rel="canonical" href="https://deftonesfansite.vercel.app/html/videoclips.html">
-    <link rel="icon" type="image/png" href="../images/icon (1).png">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/coronet">
-</head>
-<body>
-
-    <header>
-        <h1>Deftones</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li><a href="./biografia.html">Biografía</a></li>
-                <li><a href="./discografia.html">Discografía</a></li>
-                <li><a href="./integrantes.html">Integrantes</a></li>
-                <li><a href="./tours.html">Tours</a></li>
-                <li><a href="./galeria.html">Galería</a></li>
-                <li><a href="./videoclips.html" class="active">Videoclips</a></li>
-                <li><a href="./tienda.html">Tienda</a></li>
-                <li><a href="./noticias.html">Noticias</a></li>
-                <li><a href="./contacto.html">Contacto</a></li>
-                <li><a href="./curso.html">Academia</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./faq.html">Preguntas Frecuentes</a></li>
-                <li><a href="./nosotros.html">Quiénes Somos</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$titulo_pagina = 'Videoclips de Deftones: videos oficiales';
+$descripcion_pagina = 'Mirá una selección de videoclips de Deftones y recorré canciones clave de sus álbumes más reconocidos.';
+$pagina_actual = 'videoclips';
+require_once __DIR__ . "/../includes/header.php";
+?>
 
     <main>
         <h2>Videoclips oficiales de Deftones</h2>
-        
+
         <div class="article-container">
             <p>Revive los videoclips más emblemáticos de Deftones a lo largo de su carrera.</p>
-            
+
             <h3>Clásicos Imprescindibles</h3>
             <div class="video-grid">
                 <article class="video-card video-card--adrenaline">
@@ -95,17 +66,11 @@
                     <a class="video-link" href="https://www.youtube.com/watch?v=1gxZIL4zpIQ" target="_blank" rel="noopener noreferrer">Ver en YouTube <span aria-hidden="true">↗</span></a>
                 </article>
             </div>
-            
-            <a href="./discografia.html" class="btn">Ver Discografía</a>
-            <a href="./tienda.html" class="btn">Ir a la Tienda</a>
+
+            <a href="./discografia.php" class="btn">Ver Discografía</a>
+            <a href="./tienda.php" class="btn">Ir a la Tienda</a>
         </div>
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
-    </footer>
 
-</body>
-<script src="../js/site.js"></script>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

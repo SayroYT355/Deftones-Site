@@ -28,8 +28,11 @@ La versión documentada contiene **14 páginas**, una hoja de estilos común, re
 
 | Ruta | Función |
 |---|---|
-| `index.html` | Acceso sencillo que redirige a la portada dentro de `html/`. |
+| `index.php` | Acceso sencillo que redirige a la portada dentro de `html/`. |
 | `html/` | Las 14 páginas del sitio y su navegación interna. |
+| `includes/` | Plantillas PHP compartidas para el encabezado, el menú y el pie de página. |
+| `config/env.php` | Lee y valida las variables de configuración locales del archivo `.env`. |
+| `.env.example` | Plantilla versionada para crear el archivo `.env` local. |
 | `css/style.css` | Estilos compartidos, diseño adaptable, tipografías, animaciones y componentes. |
 | `js/site.js` | Navegación y comportamientos comunes del sitio. |
 | `js/blog.js` | Formularios de cuenta, comentarios y publicaciones comunitarias. |
@@ -44,11 +47,19 @@ La versión documentada contiene **14 páginas**, una hoja de estilos común, re
 | `Iniciar la página.bat` | Inicia el servidor local de PHP y abre el sitio. |
 | `docs/capturas/` | Capturas comparativas de las 14 páginas. |
 
+### Modularización con PHP
+
+Yo convertí las páginas de `html/` a PHP y separé las partes repetidas en `includes/header.php`, `includes/nav.php` e `includes/footer.php`. Cada página define su título, descripción y sección activa antes de incluir el encabezado; así el navegador recibe el título correcto y el menú resalta la página actual. El pie compartido carga `js/site.js` y permite incluir scripts adicionales, como `js/blog.js` en el Blog.
+
+### Configuración del entorno local
+
+Yo guardo el nombre del sitio, el correo de contacto y el entorno de ejecución en `.env`. El archivo está excluido de Git; para preparar otra copia, yo duplico `.env.example` con el nombre `.env` y completo los valores locales. `config/env.php` lee y valida esas variables, y la página de Contacto muestra el correo configurado. No guardo contraseñas ni credenciales en este archivo.
+
 ## Historial de desarrollo
 
 ### Sitio multipágina y organización
 
-Se organizaron las páginas dentro de `html/` y se ajustaron las rutas relativas a hojas de estilo, JavaScript, imágenes, audio y video. Se agregó un `index.html` en la carpeta principal para que el proyecto se pueda abrir sin buscar la portada dentro de `html/`.
+Se organizaron las páginas dentro de `html/` y se ajustaron las rutas relativas a hojas de estilo, JavaScript, imágenes, audio y video. Se agregó un `index.php` en la carpeta principal para que el proyecto se pueda abrir sin buscar la portada dentro de `html/`.
 
 ### Diseño visual e interacción
 
@@ -96,20 +107,20 @@ El historial local registra la evolución del repositorio. El primer commit del 
 
 | Página | Contenido y función principal |
 |---|---|
-| **Inicio** (`html/index.html`) | Portada con imagen de fondo, presentación de la banda y accesos a Historia y Discografía. Incluye el control discreto de audio ambiental. |
-| **Biografía** (`html/biografia.html`) | Historia de la banda, formación, recorrido y material de referencia. |
-| **Biografía** (`html/biografia.html`) | Recorrido biográfico por la trayectoria de Deftones y sus distintas etapas. |`n| **Discografía** (`html/discografia.html`) | Diez álbumes de estudio en tarjetas con portadas y enlaces externos de Spotify. |
-| **Integrantes** (`html/integrantes.html`) | Retratos, roles musicales y biografías de siete integrantes y exintegrantes. |
-| **Tours** (`html/tours.html`) | Calendario informativo y accesos a Galería y entradas. Las fechas presentadas son contenido estático del sitio. |
-| **Galería** (`html/galeria.html`) | Veinte imágenes archivísticas en orden vertical, con pies, créditos y visor ampliado. |
-| **Videoclips** (`html/videoclips.html`) | Cuatro videoclips servidos desde MP4 locales con reproductor personalizado. |
-| **Tienda** (`html/tienda.html`) | Presentación de merchandising y botones de navegación; no procesa pagos. |
-| **Noticias** (`html/noticias.html`) | Sección informativa con accesos al calendario y al Blog. |
-| **Contacto** (`html/contacto.html`) | Interfaz de formulario de contacto. No está conectada a un servicio de envío. |
-| **Academia** (`html/curso.html`) | Guía de escucha y composición sobre las capas rítmicas, vocales, instrumentales y ambientales. |
-| **Blog** (`html/blog.html`) | Artículo editorial, comentarios y publicaciones propias de la comunidad. Leer es público; escribir requiere cuenta. |
-| **Preguntas frecuentes** (`html/faq.html`) | Respuestas breves sobre el contenido y el propósito del sitio. |
-| **Quiénes somos** (`html/nosotros.html`) | Presentación del autor y del propósito académico del proyecto. |
+| **Inicio** (`html/index.php`) | Portada con imagen de fondo, presentación de la banda y accesos a Historia y Discografía. Incluye el control discreto de audio ambiental. |
+| **Biografía** (`html/biografia.php`) | Historia de la banda, formación, recorrido y material de referencia. |
+| **Biografía** (`html/biografia.php`) | Recorrido biográfico por la trayectoria de Deftones y sus distintas etapas. |`n| **Discografía** (`html/discografia.php`) | Diez álbumes de estudio en tarjetas con portadas y enlaces externos de Spotify. |
+| **Integrantes** (`html/integrantes.php`) | Retratos, roles musicales y biografías de siete integrantes y exintegrantes. |
+| **Tours** (`html/tours.php`) | Calendario informativo y accesos a Galería y entradas. Las fechas presentadas son contenido estático del sitio. |
+| **Galería** (`html/galeria.php`) | Veinte imágenes archivísticas en orden vertical, con pies, créditos y visor ampliado. |
+| **Videoclips** (`html/videoclips.php`) | Cuatro videoclips servidos desde MP4 locales con reproductor personalizado. |
+| **Tienda** (`html/tienda.php`) | Presentación de merchandising y botones de navegación; no procesa pagos. |
+| **Noticias** (`html/noticias.php`) | Sección informativa con accesos al calendario y al Blog. |
+| **Contacto** (`html/contacto.php`) | Interfaz de formulario de contacto. No está conectada a un servicio de envío. |
+| **Academia** (`html/curso.php`) | Guía de escucha y composición sobre las capas rítmicas, vocales, instrumentales y ambientales. |
+| **Blog** (`html/blog.php`) | Artículo editorial, comentarios y publicaciones propias de la comunidad. Leer es público; escribir requiere cuenta. |
+| **Preguntas frecuentes** (`html/faq.php`) | Respuestas breves sobre el contenido y el propósito del sitio. |
+| **Quiénes somos** (`html/nosotros.php`) | Presentación del autor y del propósito académico del proyecto. |
 
 ## Partes importantes del código
 

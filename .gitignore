@@ -1,3 +1,8 @@
 # Datos locales de cuentas, guardados fuera del control de versiones
 /data/local-store.json
 /data/local-store.json.tmp
+
+# Configuración local del entorno
+/.env
+/.env.*
+!/.env.example

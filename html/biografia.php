@@ -1,42 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biografía de Deftones: historia de la banda</title>
-    <meta name="description" content="Conocé la historia de Deftones, desde sus comienzos en Sacramento hasta sus distintas etapas, discos y cambios de formación.">
-    <link rel="canonical" href="https://deftonesfansite.vercel.app/html/biografia.html">
-    <link rel="icon" type="image/png" href="../images/icon (1).png">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <header>
-        <h1>Deftones</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li><a href="./biografia.html" class="active">Biografía</a></li>
-                <li><a href="./discografia.html">Discografía</a></li>
-                <li><a href="./integrantes.html">Integrantes</a></li>
-                <li><a href="./tours.html">Tours</a></li>
-                <li><a href="./galeria.html">Galería</a></li>
-                <li><a href="./videoclips.html">Videoclips</a></li>
-                <li><a href="./tienda.html">Tienda</a></li>
-                <li><a href="./noticias.html">Noticias</a></li>
-                <li><a href="./contacto.html">Contacto</a></li>
-                <li><a href="./curso.html">Academia</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./faq.html">Preguntas Frecuentes</a></li>
-                <li><a href="./nosotros.html">Quiénes Somos</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$titulo_pagina = 'Biografía de Deftones: historia de la banda';
+$descripcion_pagina = 'Conocé la historia de Deftones, desde sus comienzos en Sacramento hasta sus distintas etapas, discos y cambios de formación.';
+$pagina_actual = 'biografia';
+require_once __DIR__ . "/../includes/header.php";
+?>
 
     <main>
         <h2>Biografía de Deftones: el sonido de Sacramento</h2>
-        
+
         <div class="article-container">
             <section>
                 <h3>Deftones</h3>
@@ -112,16 +83,10 @@
                 <p>Deftones discography. <em>Wikipedia</em>.</p>
             </section>
 
-            <a href="./discografia.html" class="btn">Explorar Discografía</a>
-            <a href="./integrantes.html" class="btn">Conocer Integrantes</a>
+            <a href="./discografia.php" class="btn">Explorar Discografía</a>
+            <a href="./integrantes.php" class="btn">Conocer Integrantes</a>
         </div>
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
-    </footer>
 
-</body>
-<script src="../js/site.js"></script>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

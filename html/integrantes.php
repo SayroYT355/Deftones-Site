@@ -1,42 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrantes de Deftones: músicos y formación</title>
-    <meta name="description" content="Conocé a los integrantes de Deftones, sus instrumentos, aportes musicales y distintas etapas de la formación.">
-    <link rel="canonical" href="https://deftonesfansite.vercel.app/html/integrantes.html">
-    <link rel="icon" type="image/png" href="../images/icon (1).png">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <header>
-        <h1>Deftones</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li><a href="./biografia.html">Biografía</a></li>
-                <li><a href="./discografia.html">Discografía</a></li>
-                <li><a href="./integrantes.html" class="active">Integrantes</a></li>
-                <li><a href="./tours.html">Tours</a></li>
-                <li><a href="./galeria.html">Galería</a></li>
-                <li><a href="./videoclips.html">Videoclips</a></li>
-                <li><a href="./tienda.html">Tienda</a></li>
-                <li><a href="./noticias.html">Noticias</a></li>
-                <li><a href="./contacto.html">Contacto</a></li>
-                <li><a href="./curso.html">Academia</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./faq.html">Preguntas Frecuentes</a></li>
-                <li><a href="./nosotros.html">Quiénes Somos</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+$titulo_pagina = 'Integrantes de Deftones: músicos y formación';
+$descripcion_pagina = 'Conocé a los integrantes de Deftones, sus instrumentos, aportes musicales y distintas etapas de la formación.';
+$pagina_actual = 'integrantes';
+require_once __DIR__ . "/../includes/header.php";
+?>
 
     <main>
         <h2>Integrantes de Deftones</h2>
-        
+
         <div class="article-container">
             <div class="member-list">
                 <article class="member-card">
@@ -130,16 +101,10 @@
                     </div>
                 </article>
             </div>
-<a href="./biografia.html" class="btn">Volver a Biografía</a>
-            <a href="./tours.html" class="btn">Ver Fechas de Gira</a>
+<a href="./biografia.php" class="btn">Volver a Biografía</a>
+            <a href="./tours.php" class="btn">Ver Fechas de Gira</a>
         </div>
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2026 Deftones Fan Site. Desarrollado por Angel De Piero - 4°3ra CS TT Informática.</p>
-    </footer>
 
-</body>
-<script src="../js/site.js"></script>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
