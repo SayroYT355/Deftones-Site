@@ -138,7 +138,12 @@ Anoté acá los elementos que NVDA leyó mal o no leyó.
 
 ### Video de la navegación
 
-Grabé un video corto con OBS donde se escucha la navegación con NVDA: `capturas/nvda-navegacion.mp4`
+Grabé un video corto con OBS donde se escucha la navegación con NVDA: `evidencias/navegacion-nvda.mp4`
+
+<video controls width="720">
+  <source src="evidencias/navegacion-nvda.mp4" type="video/mp4">
+  Tu navegador no puede reproducir este video.
+</video>
 
 ---
 
