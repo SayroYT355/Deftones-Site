@@ -36,6 +36,145 @@
         }
     }
 
+    function setupContactForm() {
+        const form = document.querySelector('#contact-form');
+        if (!form || form.dataset.validationReady === 'true') return;
+
+        const fields = [
+            { input: form.querySelector('#nombre'), error: form.querySelector('#nombre-error'), label: 'nombre' },
+            { input: form.querySelector('#email'), error: form.querySelector('#email-error'), label: 'correo electrónico' },
+            { input: form.querySelector('#mensaje'), error: form.querySelector('#mensaje-error'), label: 'consulta' }
+        ];
+        const summary = form.querySelector('#contact-summary');
+        if (fields.some(function (field) { return !field.input || !field.error; }) || !summary) {
+            console.error('El formulario de contacto no tiene todos los campos de validación esperados.');
+            return;
+        }
+
+        form.dataset.validationReady = 'true';
+
+        function getError(field) {
+            const value = field.input.value.trim();
+            if (!value) return 'Completá el campo de ' + field.label + '.';
+            if (field.input.id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                return 'Ingresá un correo válido, por ejemplo nombre@dominio.com.';
+            }
+            return '';
+        }
+
+        function renderError(field, message) {
+            field.error.textContent = message;
+            if (message) field.input.setAttribute('aria-invalid', 'true');
+            else field.input.removeAttribute('aria-invalid');
+        }
+
+        fields.forEach(function (field) {
+            field.input.addEventListener('input', function () {
+                const message = getError(field);
+                if (!message) renderError(field, '');
+                summary.hidden = true;
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            let firstInvalidField = null;
+
+            fields.forEach(function (field) {
+                const message = getError(field);
+                renderError(field, message);
+                if (message && !firstInvalidField) firstInvalidField = field.input;
+            });
+
+            if (firstInvalidField) {
+                summary.hidden = true;
+                firstInvalidField.focus();
+                return;
+            }
+
+            summary.querySelector('[data-summary="nombre"]').textContent = fields[0].input.value.trim();
+            summary.querySelector('[data-summary="email"]').textContent = fields[1].input.value.trim();
+            summary.querySelector('[data-summary="mensaje"]').textContent = fields[2].input.value.trim();
+            summary.hidden = false;
+            summary.focus();
+        });
+    }
+
+    function setupThemeToggle() {
+        if (document.querySelector('.theme-toggle')) return;
+
+        let darkMode = true;
+        try {
+            darkMode = window.localStorage.getItem('deftones-color-theme') !== 'light';
+        } catch (error) {
+            console.warn('No se pudo leer la preferencia de tema guardada.', error);
+        }
+
+        const button = document.createElement('button');
+        button.className = 'theme-toggle';
+        button.type = 'button';
+        button.setAttribute('aria-pressed', 'true');
+        body.appendChild(button);
+
+        function renderTheme() {
+            body.classList.toggle('dark-mode', darkMode);
+            body.classList.toggle('light-theme', !darkMode);
+            button.setAttribute('aria-pressed', String(darkMode));
+            button.textContent = darkMode ? 'Tema oscuro: activado' : 'Tema oscuro: desactivado';
+            button.setAttribute('aria-label', darkMode ? 'Desactivar tema oscuro' : 'Activar tema oscuro');
+        }
+
+        button.addEventListener('click', function () {
+            darkMode = !darkMode;
+            renderTheme();
+            try {
+                window.localStorage.setItem('deftones-color-theme', darkMode ? 'dark' : 'light');
+            } catch (error) {
+                console.warn('No se pudo guardar la preferencia de tema.', error);
+            }
+        });
+
+        renderTheme();
+    }
+
+    function setupLocalDateTime() {
+        const footer = document.querySelector('footer');
+        if (!footer || footer.querySelector('.site-clock')) return;
+
+        const clock = document.createElement('p');
+        const time = document.createElement('time');
+        clock.className = 'site-clock';
+        clock.setAttribute('aria-live', 'off');
+        clock.appendChild(time);
+        footer.appendChild(clock);
+
+        const formatter = new Intl.DateTimeFormat('es-AR', {
+            dateStyle: 'full',
+            timeStyle: 'medium'
+        });
+
+        function updateClock() {
+            const now = new Date();
+            time.dateTime = now.toISOString();
+            time.textContent = 'Fecha y hora local: ' + formatter.format(now);
+        }
+
+        updateClock();
+        window.setInterval(updateClock, 1000);
+    }
+
+    function setupWelcomeMessage() {
+        let shouldShowGreeting = true;
+        try {
+            shouldShowGreeting = window.sessionStorage.getItem('deftones-welcome-shown') !== 'true';
+            if (shouldShowGreeting) window.sessionStorage.setItem('deftones-welcome-shown', 'true');
+        } catch (error) {
+            console.warn('No se pudo guardar el estado del saludo de bienvenida.', error);
+        }
+
+        if (shouldShowGreeting) window.alert('¡Hola! Bienvenido/a al sitio de Deftones.');
+    }
+
     function closeNavigation() {
         if (!nav) return;
         nav.classList.remove('open');
@@ -352,6 +491,7 @@
         setupInteractiveCards();
         setupGalleryLightbox();
         setupVideoPlayers();
+        setupContactForm();
         document.querySelectorAll('iframe[src*="youtube"]').forEach(function (iframe) {
             iframe.addEventListener('error', function () {
                 const error = iframe.parentElement.querySelector('.video-error');
@@ -559,5 +699,8 @@
     const updateScrollState = setupBackToTop();
     setupBackgroundAudio();
     setupPersistentNavigation();
+    setupThemeToggle();
+    setupLocalDateTime();
     updateScrollState();
+    setupWelcomeMessage();
 })();
