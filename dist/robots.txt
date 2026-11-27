@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /data/
+Disallow: /Github%20subir%20y%20bajar/
+
+Sitemap: https://deftonesfansite.vercel.app/sitemap.xml
