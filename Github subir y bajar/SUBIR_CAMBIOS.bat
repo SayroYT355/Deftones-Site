@@ -13,6 +13,8 @@ goto finish_error
 
 :repo_found
 pushd "%PROJECT_DIR%"
+for /f "delims=" %%B in ('git branch --show-current') do set "CURRENT_BRANCH=%%B"
+if "%CURRENT_BRANCH%"=="" goto no_branch
 set /p "comision=Ingresa el nombre de la comisión: "
 if "%comision%"=="" goto empty_commission
 
@@ -22,11 +24,15 @@ git add -A
 if errorlevel 1 goto git_error
 
 git diff --cached --quiet
-if not errorlevel 1 goto no_changes
+if errorlevel 2 goto git_error
+if errorlevel 1 goto commit_changes
+goto sync_changes
 
+:commit_changes
 git commit -m "Comision %comision%"
 if errorlevel 1 goto git_error
 
+:sync_changes
 echo.
 echo Integrando cambios recientes de GitHub...
 git pull --rebase origin main
@@ -34,11 +40,11 @@ if errorlevel 1 goto rebase_error
 
 echo.
 echo Subiendo cambios a GitHub...
-git push origin main
+git push --set-upstream origin "%CURRENT_BRANCH%"
 if errorlevel 1 goto git_error
 
 echo.
-echo Cambios subidos correctamente.
+echo Cambios subidos correctamente desde la rama %CURRENT_BRANCH%.
 popd
 goto finish_ok
 
@@ -46,10 +52,9 @@ goto finish_ok
 echo Tenés que ingresar el nombre de la comisión.
 goto git_error
 
-:no_changes
-echo No hay cambios nuevos para subir.
-popd
-goto finish_ok
+:no_branch
+echo ERROR: No hay una rama actual. Crea o selecciona una rama antes de subir cambios.
+goto git_error
 
 :rebase_error
 echo.
